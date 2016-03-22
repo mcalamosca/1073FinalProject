@@ -1,42 +1,50 @@
 <html>
     <head>
     <title>Final Project</title>
-        <script src="js/jquery-2.2.1.min.js"></script>
-        <script>
-            $(document).ready(function(){
-                $tbl = $('#tblCalendar');
+    <style>
+        #tblCalendar tr td{
+            border: 1px solid #000000;
+            border-collapse: collapse;
+            padding: 3px;
+        }    
+    </style>
+    <script src="js/jquery-2.2.2.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $tbl = $('#tblCalendar');
+            $.get("js/form.json", function(data){
+                //console.log(data);
                 $tr = $('<tr></tr>');
-                $.get("js/form.json", function(data){
-                    //console.log(data);
+                $tr.append($('<td>&nbsp;</td>'));
+                for(var j = 0; j < data.timeline.length; j++){
+                    $td = $('<td></td>');
+                    $td.html(data.timeline[j].timeItemLabel);
+                    $tr.append($td);
+                }
+                $tbl.append($tr);
+                
+                for(var i = 0; i < data.topics.length; i++){
+                    console.log("Row label value: " + data.topics[i].topicLabel);
                     $tr = $('<tr></tr>');
-                    $tr.append($('<td>&nbsp;</td>'));
+                    $td = $('<td></td>');
+                    $td.attr('id', i);
+                    $td.html(data.topics[i].topicLabel);
+
+                    $tr.append($td);
                     for(var j = 0; j < data.timeline.length; j++){
                         $td = $('<td></td>');
-                        $td.html(data.timeline[j].timeItemLabel);
+                        $td.attr('id', data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
+                        $td.html('&nbsp;');
                         $tr.append($td);
                     }
-                    for(var i = 0; i < data.topics.length; i++){
-                        $tr = $('<tr></tr>');
-                        $td = $('<td></td>');
-                        $td.attr('id', i);
-                        $td.html(data.topics[i].topicLabel);
-                        
-                        $tr.append($td);
-                        
-                        $tbl.append($tr);
-                        
-                        for(var j = 0; j < data.timeline.length; j++){
-                            $td = $('<td></td>');
-                            $td.attr('id', data.topics[i].topicID + '_' + data.timeline[j].timeItemID)
-                            $td.html(data.timeline[j].timeItemLabel);
-                            $tr.append($td);
-                        
-                        $
-                    }
-                });
+                    
+                    $tbl.append($tr);
+
+                }
             });
-                        
-        </script>
+        });
+
+    </script>
     </head>
     <body>
         <table id="tblCalendar">
