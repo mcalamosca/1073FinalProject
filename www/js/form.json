@@ -10,7 +10,7 @@
         },
         {
             "topicID" : 3,
-            "topicLabel" : "Supports: Priary supports or important people who help you?"
+            "topicLabel" : "Supports: Primary supports or important people who help you?"
         },
         {
             "topicID" : 4,
@@ -30,7 +30,7 @@
         },
         {
             "topicID" : 8,
-            "topicLabel" : "Screen Time: Child computer, video, TV time? #hours/day? Child/family routine?"
+            "topicLabel" : "Screen Time: Child computer, video, TV time? # of hours/day? Child/family routine?"
         },
         {
             "topicID" : 9,
@@ -42,7 +42,7 @@
         },
         {
             "topicID" : 11,
-            "topicLabel" : "Sleep (self): Sleep and rest habits? #hrs/night?"
+            "topicLabel" : "Sleep (self): Sleep and rest habits? # of hours/night?"
         },
         {
             "topicID" : 12,
