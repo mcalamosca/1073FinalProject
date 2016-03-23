@@ -1,72 +1,73 @@
 <html>
-    <head>
+
+<head>
     <title>Final Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <style>
-        #tblCalendar tr td{
+        #tblCalendar tr td {
             border: 1px solid #000000;
             border-collapse: collapse;
             padding: 3px;
-        }    
+        }
     </style>
     <script src="js/jquery-2.2.2.min.js"></script>
-    
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.11.4.custom/jquery-ui.theme.css" />
+
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             $tbl = $('#tblCalendar');
-            $.get("js/form.json", function(data){
+            $.get("js/form.json", function(data) {
                 //console.log(data);
                 $tr = $('<tr></tr>');
                 //Top left corner, empty box
-                $tr.append($('<td id="corner">&nbsp;</td>'));
-                
+                $tr.append($('<th id="corner" class="ui-widget-header">&nbsp;</th>'));
+
                 //Constructs rows, adds timeline values
-                for(var j = 0; j < data.timeline.length; j++){
-                    $td = $('<td></td>');
-                    $td.html(data.timeline[j].timeItemLabel);
-                    $tr.append($td);
+                for (var j = 0; j < data.timeline.length; j++) {
+                    $th = $('<th class="ui-widget-header"></th>');
+                    $th.html('<strong>' + data.timeline[j].timeItemLabel + '</strong>');
+                    $tr.append($th);
                 }
                 $tbl.append($tr);
-                
+
                 //Populate the topics column
-                for(var i = 0; i < data.topics.length; i++){
+                for (var i = 0; i < data.topics.length; i++) {
                     //console.log("Row label value: " + data.topics[i].topicLabel);
-                    $tr = $('<tr></tr>');
+                    $tr = $('<tr>"></tr>');
                     $td = $('<td></td>');
                     $td.attr('id', i);
                     $td.html(data.topics[i].topicLabel);
-                    
+
                     //Add boxes in each row equal to number of columns
                     $tr.append($td);
-                    for(var j = 0; j < data.timeline.length; j++){
-                        $td = $z('<td></td>');
+                    for (var j = 0; j < data.timeline.length; j++) {
+                        $td = $('<td></td>');
                         $td.attr('id', data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
-                        $td.html('&nbsp;');
-                        
-                        
+                        $td.html('<textarea id="input_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID + '" wrap="hard" style = "height:100%;width:100%;resize:none;border:none;">');
+
+
                         $tr.append($td);
 
-                    }                    
+                    }
                     $tbl.append($tr);
-                    
+
                 }
             });
-            $("#tblCalendar").on('click', 'td', function(e){
-                console.log(this);
-                
-                $txt = $('input');
-                $txt.attr('type','text');
-                $txt.appendTo(this);
-                //e.stopPropagation();
-            });
+            
         });
-
+        
+      
     </script>
-    </head>
-    <body>
-        <table id="tblCalendar">
-            <tr></tr>
-        </table>
-        <input type="text" id="txtUserInput">
+</head>
 
-    </body>
+<body>
+    <table id="tblCalendar" border="1" class="ui-widget">
+        <tbody class="ui-widget-content">
+            <tr></tr>
+        </tbody>
+    </table>
+
+
+</body>
+
 </html>
