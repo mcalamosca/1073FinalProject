@@ -12,6 +12,9 @@
     </style>
     <script src="js/jquery-2.2.2.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.11.4.custom/jquery-ui.theme.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="js/jquery.tabletojson.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -38,23 +41,30 @@
                     $td.attr('id', i);
                     $td.html(data.topics[i].topicLabel);
 
-                    //Add boxes in each row equal to number of columns
+                    //Add boxes and text areas in each row equal to number of columns
                     $tr.append($td);
                     for (var j = 0; j < data.timeline.length; j++) {
                         $td = $('<td></td>');
                         $td.attr('id', data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
                         $td.html('<textarea id="input_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID + '" wrap="hard" style = "height:100%;width:100%;resize:none;border:none;">');
 
-
                         $tr.append($td);
-
                     }
                     $tbl.append($tr);
-
                 }
+                
+                //Submit button
+                $('#corner').append($('<input id="btnSubmit" type="button" value="Submit Form">'));
+                $('#btnSubmit').click(function(){
+                    var table = $('#tblCalendar').tableToJSON();
+                    console.log(table);
+                    alert(JSON.stringify(table));
+                });
             });
             
         });
+        
+        
         
       
     </script>
