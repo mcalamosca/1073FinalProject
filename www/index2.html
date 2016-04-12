@@ -52,18 +52,28 @@
                     }
                     $tbl.append($tr);
                 }
-                
                 //Submit button
                 $('#corner').append($('<input id="btnSubmit" type="button" value="Submit Form">'));
-                $('#btnSubmit').click(function(){
-                    var table = $('#tblCalendar').tableToJSON();
+                /**$('#btnSubmit').click(function(){
+                    var table = $('#tblCalendar').tableToJSON(allowHTML=true, includeRowID=true);
                     console.log(table);
                     alert(JSON.stringify(table));
+                });**/
+                
+                //convert textareas to strings
+                $('#btnSubmit').click(function(){
+                    $('#tblCalendar tr').each(function (){
+                        $('td', this).each(function (){
+                            var value = $(this).find('input, select, textarea').val();
+                            $(this).find('input, select, textarea').val('');
+                            console.log(value);
+                        });
+                    });
                 });
             });
             
+                
         });
-        
         
         
       
