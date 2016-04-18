@@ -14,12 +14,16 @@
     <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.11.4.custom/jquery-ui.theme.css" />
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script src="js/jquery.tabletojson.js"></script>
 
     <script>
+        var calData = null;
         $(document).ready(function() {
             $tbl = $('#tblCalendar');
-            $.get("js/form.json", function(data) {
+            $.getJSON("js/form.json", function(data) {
+            
+            $.getJSON("js/caldata.json", function(calendarData){
+                console.log(calendarData);
+                
                 //console.log(data);
                 $tr = $('<tr></tr>');
                 //Top left corner, empty box
@@ -45,20 +49,30 @@
                     $tr.append($td);
                     for (var j = 0; j < data.timeline.length; j++) {
                         $td = $('<td></td>');
-                        $td.attr('id', data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
-                        $td.html('<textarea id="input_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID + '" wrap="hard" style = "height:100%;width:100%;resize:none;border:none;">');
-
+                        $td.attr('id', 'td_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
+                        
+                        $txt = $('<textarea></textarea>');
+                        $txt.val(getCalendarDataValue(calendarData, data.topics[i].topicID, data.timeline[j].timeItemID));
+                        $txt.attr('id', 'txt_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
+                        //$txt.attr('style', 'height:100%;width:100%;resize:none;border:none;');
+                        
+                        $txt.focusout(function(evt){
+                            $obj = $('#' + evt.target.id);
+                            
+                            saveItemData($obj.attr('id'), $obj.val());
+                        });
+                        //$td.css('display', 'none');
+                        $div = $('<div></div>');
+                        $div.attr('id', 'div_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
+                        $div.val(getCalendarDataValue(calendarData, data.topics[i].topicID, data.timeline[j].timeItemID));
+                        
+                        $td.append($txt);
                         $tr.append($td);
                     }
                     $tbl.append($tr);
                 }
                 //Submit button
                 $('#corner').append($('<input id="btnSubmit" type="button" value="Submit Form">'));
-                /**$('#btnSubmit').click(function(){
-                    var table = $('#tblCalendar').tableToJSON(allowHTML=true, includeRowID=true);
-                    console.log(table);
-                    alert(JSON.stringify(table));
-                });**/
                 
                 //convert textareas to strings
                 $('#btnSubmit').click(function(){
@@ -66,14 +80,43 @@
                         $('td', this).each(function (){
                             var value = $(this).find('input, select, textarea').val();
                             $(this).find('input, select, textarea').val('');
-                            console.log(value);
+                            $(this).html(value);
+                            console.log(value);                            
                         });
                     });
                 });
-            });
+                
+                function saveItemData(controlID, val){
+                    var topicID, timeItemID;
+                    var idArray = controlID.split('_');
+                    var dataToSave = {};
+                    if(idArray.length == 3){
+                        topicID = idArray[1];
+                        timeItemID = idArray[2];
+                        
+                        dataToSave.topicID = topicID;
+                        dataToSave.timeItemID = timeItemID;
+                        dataToSave.textValue = val;
+                        
+                        console.log(dataToSave);
+                        //$.post('savecalendarentry.php', dataToSave);
+                    }
+            };
             
                 
         });
+                function getCalendarDataValue(calData, topicID, timeItemID){
+            for (var k; k < calData.calData.length; k++){
+                if(calData.caldata[k].topicID == topicID && calData.caldata[d].timeItemID == timeItemID){
+                    console.log(calData.caldata[k]);
+                };
+            };
+        };
+                function displayEditableText(topicID, timeItemID){
+                    $div = $('#div');
+                }
+    });
+    });
         
         
       
