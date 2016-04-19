@@ -18,7 +18,9 @@
     <script>
         $(document).ready(function () {
             $tbl = $('#tblCalendar');
-            $tbl.css('table-layout', 'fixed');
+            $tbl.css('class', 'responsive');
+            var docHeight = $(window).height();
+            var docWidth = $(window).width();
             $.getJSON("js/form.json", function (data) {
                 $.getJSON("js/caldata.json", function (calendarData) {
                     var timeLineWidth;
@@ -26,7 +28,7 @@
                     console.log(calendarData);
                     //console.log(data);
                     $tr = $('<tr></tr>');
-                    
+
                     //Top left corner, empty box
                     $tr.append($('<th id="corner" class="ui-widget-header">&nbsp;</th>'));
 
@@ -34,8 +36,8 @@
                     for (var j = 0; j < data.timeline.length; j++) {
                         $th = $('<th class="ui-widget-header"></th>');
                         $th.html('<strong>' + data.timeline[j].timeItemLabel + '</strong>');
-                        timelineWidth = 1024/data.timeline.length;
-                        $th.attr('style', 'width:'+ timelineWidth +'px;');
+                        timelineWidth = docWidth / data.timeline.length;
+                        $th.attr('style', 'width:' + timelineWidth + 'px;');
                         $tr.append($th);
                     }
                     $tbl.append($tr);
@@ -43,39 +45,43 @@
                     //Populate the topics rows
                     for (var i = 0; i < data.topics.length; i++) {
                         //console.log("Row label value: " + data.topics[i].topicLabel);
+                        topicsHeight = docHeight / (data.topics.length + 1);
                         $tr = $('<tr>"></tr>');
                         $tdTopic = $('<td></td>');
                         $tdTopic.attr('id', i);
+                        $tdTopic.attr('style', 'height:' + topicsHeight + ';width:' + timelineWidth + ';');
                         $tdTopic.html(data.topics[i].topicLabel);
-                        
-                        $tdTopic.attr('style', 'width:65px;')
+                        $tdTopic.attr('style', 'width:90px;');
                         $tr.append($tdTopic);
-                        
+
                         //Add boxes and text areas in each row equal to number of columns
                         for (var j = 0; j < data.timeline.length; j++) {
+                            //Create td, then add a div and textarea inside  
                             $td = $('<td></td>');
                             $td.attr('id', 'td_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
+                            $td.attr('style', 'height:' + topicsHeight + ';width:' + timelineWidth + ';');
                             //$td.attr('style', 'height:100%;width:'+ timelineWidth+';resize:none;;');
-                            
+
                             $txt = $('<textarea></textarea>');
-                            
                             $txt.val(getCalendarDataValue(calendarData, data.topics[i].topicID, data.timeline[j].timeItemID));
                             $txt.attr('id', 'txt_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
-                                                        
+                            $txt.css('display', 'none');
+
                             //$txt.attr('style', 'height:100%;width:100%;resize:none;border:none;');
 
+                            //build JSON and submit when user clicks off
                             $txt.focusout(function (evt) {
                                 $obj = $('#' + evt.target.id);
                                 saveItemData($obj.attr('id'), $obj.val());
                             });
-                            $txt.css('display', 'none');
                             $div = $('<div></div>');
                             $div.attr('id', 'div_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
-                            timelineWidth = 1024/(data.timeline.length + 2);
-                            topicsHeight = 768/(data.topics.length + 1);
-                            $div.attr('style', 'height:'+ topicsHeight + ';width:'+ timelineWidth+';');
-                            //$div.css('display', 'none');
-                            
+
+                            //adjust div height and width
+                            timelineWidth = docWidth / (data.timeline.length + 2);
+                            topicsHeight = docHeight / (data.topics.length + 1);
+                            $div.attr('style', 'height:' + topicsHeight + ';width:' + timelineWidth + ';overflow: hidden; text-overflow: ellipsis;');
+
                             $div.html(getCalendarDataValue(calendarData, data.topics[i].topicID, data.timeline[j].timeItemID));
                             $div.click(function (evt) {
                                 console.log("clicked");
@@ -83,25 +89,11 @@
                             });
                             //console.log($div);
                             $td.append($div);
-                            $td.append($txt);                        
+                            $td.append($txt);
                             $tr.append($td);
                         }
                         $tbl.append($tr);
                     }
-                    //Submit button
-                    $('#corner').append($('<input id="btnSubmit" type="button" value="Submit Form">'));
-
-                    //convert textareas to strings
-                    $('#btnSubmit').click(function () {
-                        $('#tblCalendar tr').each(function () {
-                            $('td', this).each(function () {
-                                var value = $(this).find('input, select, textarea').val();
-                                $(this).find('input, select, textarea').val('');
-                                $(this).html(value);
-                                console.log(value);
-                            });
-                        });
-                    });
 
                     function saveItemData(controlID, val) {
                         var topicID, timeItemID;
@@ -125,7 +117,7 @@
 
 
                 });
-                
+
 
                 function getCalendarDataValue(calData, topicID, timeItemID) {
                     for (var k = 0; k < calData.caldata.length; k++) {
@@ -138,20 +130,22 @@
 
                 function displayEditableText(controlID) {
                     var idArray = controlID.split('_');
-                    timelineWidth = 1024/(data.timeline.length + 2);
-                    
+                    timelineWidth = docWidth / (data.timeline.length + 2);
+                    topicsHeight = docHeight / (data.topics.length + 1);
+
+
                     if (idArray.length == 3) {
                         topicID = idArray[1];
                         timeItemID = idArray[2];
 
                         $div = $('#div_' + topicID + '_' + timeItemID);
                         $txt = $('#txt_' + topicID + '_' + timeItemID);
-                        
-                        $txt.attr('style', 'height:100%;width:'+ timelineWidth+';resize:none;border:none;');
+
+                        $txt.attr('style', 'height:' + topicsHeight + ';width:' + timelineWidth + ';border:none;padding:none;');
                         $div.css('display', 'none');
                         $txt.css('display', 'block');
-                    }else{
-                        $txt.attr('style', 'height:100%;width:'+ timelineWidth+';resize:none;border:none;');    
+                    } else {
+                        $txt.attr('style', 'height:' + topicsHeight + ';width:' + timelineWidth + ';border:none;');
                         $div.css('display', 'none');
                         $txt.css('display', 'block');
                     }
@@ -164,7 +158,6 @@
 <body>
     <table id="tblCalendar" border="1" class="ui-widget">
         <tbody class="ui-widget-content">
-            <tr></tr>
         </tbody>
     </table>
 
