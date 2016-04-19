@@ -60,17 +60,12 @@
                                 
                                 saveItemData($obj.attr('id'), $obj.val());
                             });
-                            $txt.css('display', 'none');
+                            //$td.css('display', 'none');
                             $div = $('<div></div>');
                             $div.attr('id', 'div_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
-                            $div.attr('style', 'height:100%;width:100%;');
-                            $div.html(getCalendarDataValue(calendarData, data.topics[i].topicID, data.timeline[j].timeItemID));
-                            $div.click(function(evt){
-                                displayEditableText(evt.target.id);
-                            })
+                            $div.val(getCalendarDataValue(calendarData, data.topics[i].topicID, data.timeline[j].timeItemID));
 
                             $td.append($txt);
-                            $td.append($div);
                             $tr.append($td);
                         }
                         $tbl.append($tr);
@@ -94,19 +89,16 @@
                         var topicID, timeItemID;
                         var idArray = controlID.split('_');
                         var dataToSave = {};
+                        if (idArray.length == 3 && val !== null) {
+                            topicID = idArray[1];
+                            timeItemID = idArray[2];
 
-                        if (val !== "") {
-                            if (idArray.length == 3) {
-                                topicID = idArray[1];
-                                timeItemID = idArray[2];
+                            dataToSave.topicID = topicID;
+                            dataToSave.timeItemID = timeItemID;
+                            dataToSave.textValue = val;
 
-                                dataToSave.topicID = topicID;
-                                dataToSave.timeItemID = timeItemID;
-                                dataToSave.textValue = val;
-
-                                console.log(dataToSave);
-                                //$.post('savecalendarentry.php', dataToSave);
-                            }
+                            console.log(dataToSave);
+                            //$.post('savecalendarentry.php', dataToSave);
                         }
                     };
 
@@ -115,7 +107,7 @@
 
                 function getCalendarDataValue(calData, topicID, timeItemID) {
                     for (var k; k < calData.calData.length; k++) {
-                        if (calData.caldajta[k].topicID == topicID && calData.caldata[d].timeItemID == timeItemID) {
+                        if (calData.caldata[k].topicID == topicID && calData.caldata[d].timeItemID == timeItemID) {
                             console.log(calData.caldata[k]);
                             return calData.caldata[k].textValue;
                         };
