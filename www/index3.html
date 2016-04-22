@@ -8,6 +8,51 @@
             border: 1px solid #000000;
             border-collapse: collapse;
             padding: 3px;
+            background: rgba(201, 201, 201, 0.25);
+        }
+        
+        textarea {
+            box-shadow: 0;
+            background-color:inherit;
+        }
+        
+        .FrontPage {
+            display: inline-block;
+        }
+        
+        #banner {
+            height: 200px;
+            position: relative;
+            padding: 50px;
+        }
+        
+        #plusPic {
+            background-color: red;
+            height: 200px;
+            float: left;
+        }
+        
+        #txtHome {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        #cadPic {
+            height: 200px;
+            float: right;
+        }
+        
+        #home {
+            background-color: darkgray;
+            position: inherit;
+        }
+        
+        #homeControls {
+            top: 50%;
+            left: 50%;
+            padding: 100px;
         }
     </style>
     <script src="js/jquery-2.2.2.min.js"></script>
@@ -16,6 +61,8 @@
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
     <script>
+        var famMem;
+
         $(document).ready(function() {
             $tbl = $('#tblCalendar');
             $tbl.css('class', 'responsive');
@@ -94,7 +141,8 @@
                     }
 
                     //Submit button
-                    - $('#corner').append($('<input type="image" src="./img/HomeButton.png" alt="Home" height=' + topicsHeight + 'px >')); -
+                    $('#corner').append($('<input type="image" src="./img/HomeButton.png" alt="Home" height=' + topicsHeight + 'px onclick="returnToHome()">'));
+
 
 
                     function saveItemData(controlID, val) {
@@ -117,9 +165,7 @@
                         }
                     };
 
-
                 });
-
 
                 function getCalendarDataValue(calData, topicID, timeItemID) {
                     for (var k = 0; k < calData.caldata.length; k++) {
@@ -153,16 +199,58 @@
                     }
                 }
             });
+
         });
+
+        function returnToHome() {
+            location.href = "#home";
+            console.log("Redirecting...");
+
+        }
+
+        function calender() {
+            // chosenFamMem();
+
+            location.href = "#calender";
+            console.log("Redirecting...");
+
+        }
+
+        function chosenFamMem() {
+            var x = document.getElementById("cboFamMem").value();
+            famMem = x;
+        }
     </script>
 </head>
 
 <body>
-    <table id="tblCalendar" border="1" class="ui-widget">
-        <tbody class="ui-widget-content">
-        </tbody>
-    </table>
 
+    <div id="home" data-role="page">
+        <div id="banner">
+            <div id="plusPic" class="FrontPage">
+                <img src="./img/HomePlus.png" height="200px">
+            </div>
+            <div id="txtHome" class="FrontPage">
+                <h1 style="text-align:center;">Medical Event History Calender</h1>
+            </div>
+            <div id="cadPic" class="FrontPage">
+                <img src="./img/cadueceus.png" height="200px">
+            </div>
+        </div>
+        <div id="homeControls">
+            <select id="cboFamMem">
+                <option selected=>Choose a Calender</option>
+            </select>
+            <button type="submit" onclick="calender()">Show me this Calender</button>
+        </div>
+    </div>
+
+    <div id="calender" data-role="page">
+        <table id="tblCalendar" border="1" class="ui-widget">
+            <tbody class="ui-widget-content">
+            </tbody>
+        </table>
+    </div>
 
 </body>
 

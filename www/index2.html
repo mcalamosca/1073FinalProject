@@ -17,142 +17,142 @@
 
     <script>
         $(document).ready(function() {
-        $tbl = $('#tblCalendar');
-        $tbl.css('class', 'responsive');
-        var docHeight = $(window).height();
-        var docWidth = $(window).width();
-        $.getJSON("js/form.json", function(data) {
-            $.getJSON("js/caldata.json", function(calendarData) {
-                var timeLineWidth;
-                var topicsHeight;
-                console.log(calendarData);
-                //console.log(data);
-                $tr = $('<tr></tr>');
+            $tbl = $('#tblCalendar');
+            $tbl.css('class', 'responsive');
+            var docHeight = $(window).height();
+            var docWidth = $(window).width();
+            $.getJSON("js/form.json", function(data) {
+                $.getJSON("js/caldata.json", function(calendarData) {
+                    var timeLineWidth;
+                    var topicsHeight;
+                    console.log(calendarData);
+                    //console.log(data);
+                    $tr = $('<tr></tr>');
 
-                //Top left corner, empty box
-                $tr.append($('<th id="corner" class="ui-widget-header">&nbsp;</th>'));
+                    //Top left corner, empty box
+                    $tr.append($('<th id="corner" class="ui-widget-header">&nbsp;</th>'));
 
-                //Constructs columns, adds timeline values
-                for (var j = 0; j < data.timeline.length; j++) {
-                    $th = $('<th class="ui-widget-header"></th>');
-                    $th.html('<strong>' + data.timeline[j].timeItemLabel + '</strong>');
-                    timelineWidth = docWidth / data.timeline.length;
-                    $th.attr('style', 'width:' + timelineWidth + 'px;');
-                    $tr.append($th);
-                }
-                $tbl.append($tr);
-
-                //Populate the topics rows
-                for (var i = 0; i < data.topics.length; i++) {
-                    //console.log("Row label value: " + data.topics[i].topicLabel);
-                    topicsHeight = docHeight / (data.topics.length + 1);
-                    $tr = $('<tr>"></tr>');
-                    $tdTopic = $('<td></td>');
-                    $tdTopic.attr('id', i);
-                    $tdTopic.attr('style', 'height:113px;width:' + timeLineWidth);
-                    $tdTopic.html(data.topics[i].topicLabel);
-                    //$tdTopic.attr('style', 'width:90px;');
-                    $tr.append($tdTopic);
-
-                    //Add boxes and text areas in each row equal to number of columns
+                    //Constructs columns, adds timeline values
                     for (var j = 0; j < data.timeline.length; j++) {
-                        //Create td, then add a div and textarea inside  
-                        $td = $('<td></td>');
-                        $td.attr('id', 'td_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
-                        $td.attr('style', 'height:' + topicsHeight + ';width:' + timelineWidth + ';');
-                        //$td.attr('style', 'height:100%;width:'+ timelineWidth+';resize:none;;');
-
-                        $txt = $('<textarea></textarea>');
-                        $txt.val(getCalendarDataValue(calendarData, data.topics[i].topicID, data.timeline[j].timeItemID));
-                        $txt.attr('id', 'txt_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
-                        $txt.css('display', 'none');
-
-                        //build JSON and submit when user clicks off
-                        $txt.focusout(function(evt) {
-                            $obj = $('#' + evt.target.id);
-                            saveItemData($obj.attr('id'), $obj.val());
-                        });
-                        $div = $('<div></div>');
-                        $div.attr('id', 'div_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
-
-                        //adjust div height and width
-                        timelineWidth = docWidth / (data.timeline.length + 2);
-                        topicsHeight = docHeight / (data.topics.length + 1);
-                        $div.attr('style', 'height:113px;width:' + timelineWidth + ';overflow: hidden; text-overflow: ellipsis;');
-
-                        $div.html(getCalendarDataValue(calendarData, data.topics[i].topicID, data.timeline[j].timeItemID));
-                        $div.click(function(evt) {
-                            console.log("clicked");
-                            displayEditableText(evt.target.id);
-                        });
-                        //console.log($div);
-                        $td.append($div);
-                        $td.append($txt);
-                        $tr.append($td);
+                        $th = $('<th class="ui-widget-header"></th>');
+                        $th.html('<strong>' + data.timeline[j].timeItemLabel + '</strong>');
+                        timelineWidth = docWidth / data.timeline.length;
+                        $th.attr('style', 'width:' + timelineWidth + 'px;');
+                        $tr.append($th);
                     }
                     $tbl.append($tr);
-                }
 
-                //Submit button
-                - $('#corner').append($('<input type="image" src="./img/HomeButton.jpg" alt="Home" height=' + topicsHeight+ 'px >')); -
-            
+                    //Populate the topics rows
+                    for (var i = 0; i < data.topics.length; i++) {
+                        //console.log("Row label value: " + data.topics[i].topicLabel);
+                        topicsHeight = docHeight / (data.topics.length + 1);
+                        $tr = $('<tr>"></tr>');
+                        $tdTopic = $('<td></td>');
+                        $tdTopic.attr('id', i);
+                        $tdTopic.attr('style', 'height:113px;width:' + timeLineWidth);
+                        $tdTopic.html(data.topics[i].topicLabel);
+                        //$tdTopic.attr('style', 'width:90px;');
+                        $tr.append($tdTopic);
 
-            function saveItemData(controlID, val) {
-                var topicID, timeItemID;
-                var idArray = controlID.split('_');
-                var dataToSave = {};
+                        //Add boxes and text areas in each row equal to number of columns
+                        for (var j = 0; j < data.timeline.length; j++) {
+                            //Create td, then add a div and textarea inside  
+                            $td = $('<td></td>');
+                            $td.attr('id', 'td_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
+                            $td.attr('style', 'height:' + topicsHeight + ';width:' + timelineWidth + ';');
+                            //$td.attr('style', 'height:100%;width:'+ timelineWidth+';resize:none;;');
 
-                if (val !== "") {
+                            $txt = $('<textarea></textarea>');
+                            $txt.val(getCalendarDataValue(calendarData, data.topics[i].topicID, data.timeline[j].timeItemID));
+                            $txt.attr('id', 'txt_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
+                            $txt.css('display', 'none');
+
+                            //build JSON and submit when user clicks off
+                            $txt.focusout(function(evt) {
+                                $obj = $('#' + evt.target.id);
+                                saveItemData($obj.attr('id'), $obj.val());
+                            });
+                            $div = $('<div></div>');
+                            $div.attr('id', 'div_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
+
+                            //adjust div height and width
+                            timelineWidth = docWidth / (data.timeline.length + 2);
+                            topicsHeight = docHeight / (data.topics.length + 1);
+                            $div.attr('style', 'height:113px;width:' + timelineWidth + ';overflow: hidden; text-overflow: ellipsis;');
+
+                            $div.html(getCalendarDataValue(calendarData, data.topics[i].topicID, data.timeline[j].timeItemID));
+                            $div.click(function(evt) {
+                                console.log("clicked");
+                                displayEditableText(evt.target.id);
+                            });
+                            //console.log($div);
+                            $td.append($div);
+                            $td.append($txt);
+                            $tr.append($td);
+                        }
+                        $tbl.append($tr);
+                    }
+
+                    //Submit button
+                    - $('#corner').append($('<input type="image" src="./img/HomeButton.png" alt="Home" height=' + topicsHeight + 'px >')); -
+
+
+                    function saveItemData(controlID, val) {
+                        var topicID, timeItemID;
+                        var idArray = controlID.split('_');
+                        var dataToSave = {};
+
+                        if (val !== "") {
+                            if (idArray.length == 3) {
+                                topicID = idArray[1];
+                                timeItemID = idArray[2];
+
+                                dataToSave.topicID = topicID;
+                                dataToSave.timeItemID = timeItemID;
+                                dataToSave.textValue = val;
+
+                                console.log(dataToSave);
+                                //$.post('savecalendarentry.php', dataToSave);
+                            }
+                        }
+                    };
+
+
+                });
+
+
+                function getCalendarDataValue(calData, topicID, timeItemID) {
+                    for (var k = 0; k < calData.caldata.length; k++) {
+                        if (calData.caldata[k].topicID == topicID && calData.caldata[k].timeItemID == timeItemID) {
+                            return calData.caldata[k].textValue;
+                        }
+                    }
+                };
+
+
+                function displayEditableText(controlID) {
+                    var idArray = controlID.split('_');
+                    timelineWidth = docWidth / (data.timeline.length + 2);
+                    topicsHeight = docHeight / (data.topics.length + 1);
+
+
                     if (idArray.length == 3) {
                         topicID = idArray[1];
                         timeItemID = idArray[2];
 
-                        dataToSave.topicID = topicID;
-                        dataToSave.timeItemID = timeItemID;
-                        dataToSave.textValue = val;
+                        $div = $('#div_' + topicID + '_' + timeItemID);
+                        $txt = $('#txt_' + topicID + '_' + timeItemID);
 
-                        console.log(dataToSave);
-                        //$.post('savecalendarentry.php', dataToSave);
+                        $txt.attr('style', 'height:113px;width:' + timelineWidth + ';border:none;padding:none;resize:none;');
+                        $div.css('display', 'none');
+                        $txt.css('display', 'block');
+                    } else {
+                        $txt.attr('style', 'height:' + topicsHeight + ';width:' + timelineWidth + ';border:none;resize:none;');
+                        $div.css('display', 'none');
+                        $txt.css('display', 'block');
                     }
                 }
-            };
-
-
-        });
-
-
-        function getCalendarDataValue(calData, topicID, timeItemID) {
-            for (var k = 0; k < calData.caldata.length; k++) {
-                if (calData.caldata[k].topicID == topicID && calData.caldata[k].timeItemID == timeItemID) {
-                    return calData.caldata[k].textValue;
-                }
-            }
-        };
-
-
-        function displayEditableText(controlID) {
-            var idArray = controlID.split('_');
-            timelineWidth = docWidth / (data.timeline.length + 2);
-            topicsHeight = docHeight / (data.topics.length + 1);
-
-
-            if (idArray.length == 3) {
-                topicID = idArray[1];
-                timeItemID = idArray[2];
-
-                $div = $('#div_' + topicID + '_' + timeItemID);
-                $txt = $('#txt_' + topicID + '_' + timeItemID);
-
-                $txt.attr('style', 'height:113px;width:' + timelineWidth + ';border:none;padding:none;resize:none;');
-                $div.css('display', 'none');
-                $txt.css('display', 'block');
-            } else {
-                $txt.attr('style', 'height:' + topicsHeight + ';width:' + timelineWidth + ';border:none;resize:none;');
-                $div.css('display', 'none');
-                $txt.css('display', 'block');
-            }
-        }
-        });
+            });
         });
     </script>
 </head>
