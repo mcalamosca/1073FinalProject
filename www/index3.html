@@ -13,7 +13,7 @@
         
         textarea {
             box-shadow: 0;
-            background-color:inherit;
+            background-color: inherit;
         }
         
         .FrontPage {
@@ -203,22 +203,27 @@
         });
 
         function returnToHome() {
+            $('#cboFamMem').index(2);
             location.href = "#home";
             console.log("Redirecting...");
 
         }
 
         function calender() {
-            // chosenFamMem();
+            chosenFamMem();
 
-            location.href = "#calender";
-            console.log("Redirecting...");
-
+            if (famMem === "default") {
+                $("#warning").val("Please make a Valid selection.");
+            } else {
+                location.href = "#calender";
+                console.log("Redirecting...");
+            }
         }
 
         function chosenFamMem() {
-            var x = document.getElementById("cboFamMem").value();
-            famMem = x;
+            var x = document.getElementById("cboFamMem");
+            famMem = x.value;
+            console.log(famMem);
         }
     </script>
 </head>
@@ -232,14 +237,17 @@
             </div>
             <div id="txtHome" class="FrontPage">
                 <h1 style="text-align:center;">Medical Event History Calender</h1>
-            </div>
+                <h5 id="warning" style="color:red"></h5> </div>
             <div id="cadPic" class="FrontPage">
                 <img src="./img/cadueceus.png" height="200px">
             </div>
         </div>
         <div id="homeControls">
             <select id="cboFamMem">
-                <option selected=>Choose a Calender</option>
+                <option value="default">Choose a Calender</option>
+                <option>MOM</option>
+                <option>DAD</option>
+                <option>KID</option>
             </select>
             <button type="submit" onclick="calender()">Show me this Calender</button>
         </div>

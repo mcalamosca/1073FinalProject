@@ -10,27 +10,25 @@
             padding: 3px;
         }
         
-        .table_con{
-            width:100%;
-            height:100%;
+        .table_con {
+            width: 100%;
+            height: 100%;
         }
-        
     </style>
     <script src="js/jquery-2.2.2.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.11.4.custom/jquery-ui.theme.css" />
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    
+
 
     <script>
-        
         $(document).ready(function() {
-            
-    
-        $('.finished').hide();
-            
-            
-            
+
+
+            $('.finished').hide();
+
+
+
             $tbl = $('#tblCalendar');
             $tbl.css('class', 'responsive');
             var docHeight = $(window).height();
@@ -64,7 +62,7 @@
                         $tdTopic = $('<td></td>');
                         $tr.attr('class', 'tblRow');
                         $tr.attr('id', 'row' + i);
-                        $tr.attr('style','height:250px');
+                        $tr.attr('style', 'height:250px');
                         console.log($tr);
                         $tdTopic.attr('id', i);
                         $tdTopic.attr('style', 'height:113px;width:' + timeLineWidth);
@@ -123,41 +121,45 @@
                     }
                     $('#row0').show();
 
-                    
-                    $track=0;
-                    $rowtrack='';
-                    $('#nextBtn').click(function(){
-                       console.log($track); 
-                        if($track<data.topics.length){
+
+                    $track = 0;
+                    $rowtrack = '';
+                    $('#nextBtn').click(function() {
+                        console.log($track);
+                        if ($track < data.topics.length) {
                             $('.finished').hide();
-                            
-                            $rowtrack="#row"+$track;
+
+                            $rowtrack = "#row" + $track;
                             console.log($rowtrack);
                             $($rowtrack).hide();
                             $track++;
-                 
-                            $rowtrack="#row"+$track;
+
+                            $rowtrack = "#row" + $track;
                             $($rowtrack).show();
-                            if($track==data.topics.length){
-                                $track=0;
+                            if ($track == data.topics.length) {
+                                $track = 0;
                                 $('.finished').show();
-                              
+
                             }
-                            
+
                         }
-                        
-                       
+
+
                     });
-                
-                
-               
+
+
+
 
 
 
 
                     //Submit button
-                    - $('#corner').append($('<input type="image" src="./img/HomeButton.jpg" alt="Home" height=' + topicsHeight + 'px >')); -
+                    - $('#corner').append($('<a href="home.html"><img  src="./img/HomeButton.png" alt="Home" height=' + topicsHeight + 'px ></a>')); -
 
+
+                    function goHome() {
+                        $document.href('home.html');
+                    }
 
                     function saveItemData(controlID, val) {
                         var topicID, timeItemID;
@@ -215,12 +217,6 @@
                     }
                 }
 
-
-
-
-
-
-
             });
 
 
@@ -233,7 +229,7 @@
 </head>
 
 <body>
-    
+
 
     <table id="tblCalendar" border="1" class="ui-widget">
         <tbody class="ui-widget-content">
@@ -241,7 +237,10 @@
 
 
         </tbody>
-        <div class="finished"><h2>Form Complete</h2><p>Click Next to Review Your Answers</p></div>
+        <div class="finished">
+            <h2>Form Complete</h2>
+            <p>Click Next to Review Your Answers</p>
+        </div>
         <input type="button" name="nextBtn" id="nextBtn" value="Next Question" />
 
     </table>
