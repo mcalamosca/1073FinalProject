@@ -72,15 +72,16 @@
 
         function calenderRun() {
 
-            console.log(famMem + "1");
+            console.log(famMem + " on calendarRun");
             $tbl = $('#tblCalendar');
             $tbl.css('class', 'responsive');
             var docHeight = $(window).height();
             var docWidth = $(window).width();
             $.getJSON("js/form.json", function(data) {
+                console.log(famMem + " on First JSON");
                 $.getJSON("js/caldata.json", function(calendarData) {
 
-                    console.log(famMem + '2');
+                    console.log(famMem + ' on Second JSON');
                     var timeLineWidth;
                     var topicsHeight;
                     console.log(calendarData);
