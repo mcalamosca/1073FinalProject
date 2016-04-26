@@ -24,10 +24,7 @@
     <script>
         $(document).ready(function() {
 
-
             $('.finished').hide();
-
-
 
             $tbl = $('#tblCalendar');
             $tbl.css('class', 'responsive');
@@ -106,21 +103,12 @@
                             $td.append($txt);
                             $tr.append($td);
 
-
-
-
                         }
                         $tbl.append($tr);
                         $tr.hide();
 
-
-
-
-
-
                     }
                     $('#row0').show();
-
 
                     $track = 0;
                     $rowtrack = '';
@@ -139,26 +127,33 @@
                             if ($track == data.topics.length) {
                                 $track = 0;
                                 $('.finished').show();
-
                             }
-
                         }
-
-
                     });
 
+                    $('#prevBtn').click(function() {
+                        console.log($track);
+                        if ($track < data.topics.length) {
+                            $('.finished').hide();
 
+                            $rowtrack = "#row" - $track;
+                            console.log($rowtrack);
+                            $($rowtrack).hide();
+                            $track--;
 
-
-
-
+                            $rowtrack = "#row" - $track;
+                            $($rowtrack).show();
+                            if ($track == data.topics.length) {
+                                $track = 0;
+                                $('.finished').show();
+                            }
+                        }
+                    });
 
                     //Submit button
-                    - $('#corner').append($('<a href="home.html"><img  src="./img/HomeButton.png" alt="Home" height=' + topicsHeight + 'px ></a>')); -
-
-
-                    function goHome() {
-                        $document.href('home.html');
+                    if ($("#btnHome").val() !== "present") {
+                        //home button
+                        $('#corner').append($('<input id="btnHome" type="image" src="./img/HomeButton.png" alt="Home" height=' + topicsHeight + 'px onclick="returnToHome()" value="present">'));
                     }
 
                     function saveItemData(controlID, val) {
@@ -219,9 +214,14 @@
 
             });
 
-
-
         });
+        
+        function returnToHome() {
+           
+            location.href = "index.html";
+            console.log("Redirecting...");
+
+        }
     </script>
 
     <script>
@@ -230,21 +230,17 @@
 
 <body>
 
-
     <table id="tblCalendar" border="1" class="ui-widget">
         <tbody class="ui-widget-content">
-
-
-
         </tbody>
         <div class="finished">
             <h2>Form Complete</h2>
             <p>Click Next to Review Your Answers</p>
         </div>
-        <input type="button" name="nextBtn" id="nextBtn" value="Next Question" />
 
     </table>
-
+    <input type="button" name="prevBtn" id="prevBtn" value="Previous Question" />
+    <input type="button" name="nextBtn" id="nextBtn" value="Next Question" />
 
 </body>
 
