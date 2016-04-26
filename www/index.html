@@ -78,10 +78,7 @@
             var docHeight = $(window).height();
             var docWidth = $(window).width();
             $.getJSON("js/form.json", function (data) {
-                console.log(famMem + " on First JSON");
                 $.getJSON("js/caldata.json", function (calendarData) {
-
-                    console.log(famMem + ' on Second JSON');
                     var timeLineWidth;
                     var topicsHeight;
                     console.log(calendarData);
@@ -122,7 +119,6 @@
                             //$td.attr('style', 'height:100%;width:'+ timelineWidth+';resize:none;;');
 
                             $txt = $('<textarea></textarea>');
-                            console.log(famMem + " in loop");
                             $txt.val(getCalendarDataValue(calendarData, famMem, data.topics[i].topicID, data.timeline[j].timeItemID));
                             $txt.attr('id', 'txt_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
                             $txt.css('display', 'none');
@@ -142,7 +138,7 @@
 
                             $div.html(getCalendarDataValue(calendarData, famMem, data.topics[i].topicID, data.timeline[j].timeItemID));
                             $div.click(function (evt) {
-                                console.log("clicked");
+                                console.log("clicked div: " + $div.attr('id') + " txtarea: " + $txt.attr('id'));
                                 displayEditableText(evt.target.id);
                             });
                             //console.log($div);
@@ -158,6 +154,7 @@
                         $('#corner').append($('<input id="btnHome" type="image" src="./img/HomeButton.png" alt="Home" height=' + topicsHeight + 'px onclick="returnToHome()" value="present">'));
                     }
                     //This function will be used to send data to the backend. It will execute when a cell is not empty and is put out of focus
+                    //To find the id assigned to the div and txt area just check console when you click on one
                     function saveItemData(controlID, val) {
                         var topicID, timeItemID;
                         var idArray = controlID.split('_');
@@ -173,7 +170,7 @@
                                 dataToSave.textValue = val;
 
                                 console.log(dataToSave);
-                                //here is where your post method will be
+                                //here is where your post method will be    
                                 //$.post('savecalendarentry.php', dataToSave);
                             }
                         }
@@ -181,11 +178,7 @@
 
                 });
 
-                function getCalendarDataValue(calData, famMem, topicID, timeItemID) {
-                    console.log("famMem selected " + famMem);
-                    console.log(calData);
-                    
-                    
+                function getCalendarDataValue(calData, famMem, topicID, timeItemID) {                   
                     for (var k = 0; k < calData.caldata.length; k++) {
                         if (calData.caldata[k].topicID == topicID && calData.caldata[k].timeItemID == timeItemID) {
                             return calData.caldata[k].textValue;
