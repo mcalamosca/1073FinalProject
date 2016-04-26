@@ -157,7 +157,7 @@
                         //home button
                         $('#corner').append($('<input id="btnHome" type="image" src="./img/HomeButton.png" alt="Home" height=' + topicsHeight + 'px onclick="returnToHome()" value="present">'));
                     }
-
+                    //This function will be used to send data to the backend. It will execute when a cell is not empty and is put out of focus
                     function saveItemData(controlID, val) {
                         var topicID, timeItemID;
                         var idArray = controlID.split('_');
@@ -173,6 +173,7 @@
                                 dataToSave.textValue = val;
 
                                 console.log(dataToSave);
+                                //here is where your post method will be
                                 //$.post('savecalendarentry.php', dataToSave);
                             }
                         }
