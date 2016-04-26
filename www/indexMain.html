@@ -77,9 +77,9 @@
             $tbl.css('class', 'responsive');
             var docHeight = $(window).height();
             var docWidth = $(window).width();
-            $.getJSON("js/form.json", function(data) {
+            $.getJSON("js/form.json", function (data) {
                 console.log(famMem + " on First JSON");
-                $.getJSON("js/caldata.json", function(calendarData) {
+                $.getJSON("js/caldata.json", function (calendarData) {
 
                     console.log(famMem + ' on Second JSON');
                     var timeLineWidth;
@@ -122,13 +122,13 @@
                             //$td.attr('style', 'height:100%;width:'+ timelineWidth+';resize:none;;');
 
                             $txt = $('<textarea></textarea>');
-                            console.log(famMem +" in loop");
+                            console.log(famMem + " in loop");
                             $txt.val(getCalendarDataValue(calendarData, famMem, data.topics[i].topicID, data.timeline[j].timeItemID));
                             $txt.attr('id', 'txt_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
                             $txt.css('display', 'none');
 
                             //build JSON and submit when user clicks off
-                            $txt.focusout(function(evt) {
+                            $txt.focusout(function (evt) {
                                 $obj = $('#' + evt.target.id);
                                 saveItemData($obj.attr('id'), $obj.val());
                             });
@@ -140,8 +140,8 @@
                             topicsHeight = docHeight / (data.topics.length + 1);
                             $div.attr('style', 'height:113px;width:' + timelineWidth + ';overflow: hidden; text-overflow: ellipsis;');
 
-                            $div.html(getCalendarDataValue(calendarData, data.topics[i].topicID, data.timeline[j].timeItemID));
-                            $div.click(function(evt) {
+                            $div.html(getCalendarDataValue(calendarData, famMem, data.topics[i].topicID, data.timeline[j].timeItemID));
+                            $div.click(function (evt) {
                                 console.log("clicked");
                                 displayEditableText(evt.target.id);
                             });
@@ -180,10 +180,12 @@
 
                 function getCalendarDataValue(calData, famMem, topicID, timeItemID) {
                     console.log("famMem selected " + famMem);
-                    console.log(calData.MOM);
-                    for (var k = 0; k < calData.length; k++) {
-                        if (calData.MOM[k].topicID == topicID && calData.MOM[k].timeItemID == timeItemID) {
-                            return calData.MOM[k].textValue;
+                    console.log(calData);
+                    
+                    
+                    for (var k = 0; k < calData.caldata.length; k++) {
+                        if (calData.caldata[k].topicID == topicID && calData.caldata[k].timeItemID == timeItemID) {
+                            return calData.caldata[k].textValue;
                         }
                     }
                 };
@@ -227,10 +229,12 @@
 
             if (famMem === "default") {
                 $("#warning").text("Please make a Valid selection.");
-            } else {
+            } else if (famMem === "Regular") {
                 calenderRun();
                 location.href = "#calender";
                 console.log("Redirecting...");
+            } else if (famMem === "Mobile") {
+                location.href = "indexMobile.html";
             }
         }
 
@@ -250,7 +254,7 @@
                 <img src="./img/HomePlus.png" height="200px">
             </div>
             <div id="txtHome" class="FrontPage">
-                <h1 style="text-align:center;">Medical Event History Calender</h1>
+                <h1 style="text-align:center;">Medical Event History Calendar</h1>
                 <br>
                 <br>
                 <h4 id="warning" style="color:red"></h4> </div>
@@ -261,12 +265,11 @@
 
         <div id="homeControls">
             <select id="cboFamMem">
-                <option value="default">Choose a Calender</option>
-                <option>MOM</option>
-                <option>DAD</option>
-                <option>KID</option>
+                <option value="default">Choose a Calendar</option>
+                <option>Regular</option>
+                <option>Mobile</option>
             </select>
-            <button type="submit" onclick="calender()">Show me this Calender</button>
+            <button type="submit" onclick="calender()">Show me this Calendar</button>
         </div>
 
     </div>
