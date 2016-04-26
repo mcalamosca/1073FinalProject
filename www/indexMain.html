@@ -153,8 +153,10 @@
                         $tbl.append($tr);
                     }
 
-                    //Submit button
-                    $('#corner').append($('<input type="image" src="./img/HomeButton.png" alt="Home" height=' + topicsHeight + 'px onclick="returnToHome()">'));
+                    if ($("#btnHome").val() !== "present") {
+                        //home button
+                        $('#corner').append($('<input id="btnHome" type="image" src="./img/HomeButton.png" alt="Home" height=' + topicsHeight + 'px onclick="returnToHome()" value="present">'));
+                    }
 
                     function saveItemData(controlID, val) {
                         var topicID, timeItemID;
