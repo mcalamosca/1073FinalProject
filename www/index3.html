@@ -122,6 +122,7 @@
                             //$td.attr('style', 'height:100%;width:'+ timelineWidth+';resize:none;;');
 
                             $txt = $('<textarea></textarea>');
+                            console.log(famMem +" in loop");
                             $txt.val(getCalendarDataValue(calendarData, famMem, data.topics[i].topicID, data.timeline[j].timeItemID));
                             $txt.attr('id', 'txt_' + data.topics[i].topicID + '_' + data.timeline[j].timeItemID);
                             $txt.css('display', 'none');
@@ -178,10 +179,11 @@
                 });
 
                 function getCalendarDataValue(calData, famMem, topicID, timeItemID) {
-                    console.log(famMem);
-                    for (var k = 0; k < calData.famMem.length; k++) {
-                        if (calData.famMem[k].topicID == topicID && calData.famMem[k].timeItemID == timeItemID) {
-                            return calData.famMem[k].textValue;
+                    console.log("famMem selected " + famMem);
+                    console.log(calData.MOM);
+                    for (var k = 0; k < calData.length; k++) {
+                        if (calData.MOM[k].topicID == topicID && calData.MOM[k].timeItemID == timeItemID) {
+                            return calData.MOM[k].textValue;
                         }
                     }
                 };
